@@ -3,13 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { ref, push, update, get } from 'firebase/database';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import {
-  Box,
-  TextField,
-  Button,
-  Typography,
-  Paper,
-} from '@mui/material';
+import { Box, TextField, Button, Typography, Paper } from '@mui/material';
 import { database } from '../../../firebase';
 
 const UserForm: React.FC = () => {
@@ -88,8 +82,8 @@ const UserForm: React.FC = () => {
 
   return (
     <div>
-      <Paper sx={{ p: 4, maxWidth: 500, mx: 'auto', mt: 6 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+      <Paper sx={{ p: 4, maxWidth: 500, mx: 'auto', mt: 6,   background: 'linear-gradient(135deg,rgb(112, 142, 172) 0%, #e0e7ef 100%)', }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 ,   background: 'linear-gradient(135deg,rgb(145, 159, 175) 0%,rgb(200, 214, 231) 100%)',}}>
           <Button
             variant="outlined"
             color="primary"
@@ -127,6 +121,21 @@ const UserForm: React.FC = () => {
             value={formData.amountPaid}
             onChange={handleChange}
             margin="normal"
+            InputProps={{
+              inputProps: {
+                style: { MozAppearance: 'textfield' }, // For Firefox
+                step: 'any',
+                min: 0,
+              },
+              // Hide arrows for Chrome, Safari, Edge, Opera
+              sx: {
+                '& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button':
+                  {
+                    WebkitAppearance: 'none',
+                    margin: 0,
+                  },
+              },
+            }}
           />
 
           <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
@@ -135,7 +144,9 @@ const UserForm: React.FC = () => {
 
           {success && (
             <Typography color="green" mt={2}>
-              {userId ? 'Data updated successfully!' : 'Data submitted successfully!'}
+              {userId
+                ? 'Data updated successfully!'
+                : 'Data submitted successfully!'}
             </Typography>
           )}
           {error && (

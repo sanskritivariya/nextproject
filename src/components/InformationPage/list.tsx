@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ref, onValue, remove } from 'firebase/database';
@@ -61,7 +61,12 @@ const List: React.FC = () => {
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
           <Button
             variant="contained"
-            color="primary"
+            sx={{
+              ml: 1,
+              background:
+                'linear-gradient(135deg,rgb(136, 173, 211) 0%,rgb(152, 178, 207) 100%)',
+            }}
+            // color="primary"
             onClick={() => router.push('/infoPage')}
           >
             Back
@@ -69,85 +74,170 @@ const List: React.FC = () => {
         </Box>
         <Typography variant="h4" gutterBottom>
           User List
-        </Typography> 
+        </Typography>
 
         {loading ? (
           <CircularProgress />
         ) : (
-          <Paper sx={{ overflowX: 'auto' }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <b>Username</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>User Place</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>Amount Paid</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>Created At</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>Action</b>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {Object.entries(users).map(([key, user]) => (
-                  <TableRow key={key}>
-                    <TableCell>{user.username}</TableCell>
-                    <TableCell>{user.userplace}</TableCell>
-                    <TableCell>{user.amountPaid}</TableCell>
+          <Paper
+            sx={{
+              overflowX: 'auto',
+              minHeight: 300,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background:
+                'linear-gradient(135deg,rgb(112, 142, 172) 0%, #e0e7ef 100%)',
+            }}
+          >
+            {Object.keys(users).length > 0 ? (
+              <Table>
+                <TableHead>
+                  <TableRow>
                     <TableCell>
-                      {user.createdAt
-                        ? new Date(user.createdAt).toLocaleString()
-                        : '-'}
+                      <b>Username</b>
                     </TableCell>
                     <TableCell>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => router.push(`/infoPage?id=${key}`)}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => {
-                          setDeleteId(key);
-                          setOpen(true);
-                        }}
-                        sx={{ ml: 1 }}
-                      >
-                        Delete
-                      </Button>
+                      <b>User Place</b>
+                    </TableCell>
+                    <TableCell>
+                      <b>Amount Paid</b>
+                    </TableCell>
+                    <TableCell>
+                      <b>Created At</b>
+                    </TableCell>
+                    <TableCell>
+                      <b>Action</b>
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {Object.entries(users).map(([key, user]) => (
+                    <TableRow key={key}>
+                      <TableCell>{user.username}</TableCell>
+                      <TableCell>{user.userplace}</TableCell>
+                      <TableCell>{user.amountPaid}</TableCell>
+                      <TableCell>
+                        {user.createdAt
+                          ? new Date(user.createdAt).toLocaleString()
+                          : '-'}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="outlined"
+                          onClick={() => router.push(`/infoPage?id=${key}`)}
+                          sx={{
+                            ml: 1,
+                            background:
+                              'linear-gradient(135deg,rgb(164, 180, 196) 0%, #e0e7ef 100%)',
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          // color="secondary"
+                          onClick={() => {
+                            setDeleteId(key);
+                            setOpen(true);
+                          }}
+                          sx={{
+                            ml: 1,
+                            background:
+                              'linear-gradient(135deg,rgb(166, 186, 206) 0%, #e0e7ef 100%)',
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <Box
+                sx={{
+                  width: '100%',
+                  textAlign: 'center',
+                  py: 8,
+                  color: 'text.secondary',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <img
+                  src="/no-data.svg"
+                  alt="No data"
+                  style={{ width: 120, marginBottom: 16, opacity: 0.7 }}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+                <Typography variant="h6" gutterBottom>
+                  No users found
+                </Typography>
+                <Typography variant="body2">
+                  Please add users to see them listed here.
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ mt: 2 }}
+                  onClick={() => router.push('/infoPage')}
+                >
+                  Add User
+                </Button>
+              </Box>
+            )}
           </Paper>
         )}
       </Box>
 
       {/* Confirmation Dialog */}
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Delete Confirmation</DialogTitle>
-        <DialogContent>
+        <DialogTitle
+          sx={{
+            background:
+              'linear-gradient(135deg,rgb(112, 142, 172) 0%,rgb(116, 155, 201) 100%)',
+          }}
+        >
+          Delete Confirmation
+        </DialogTitle>
+        <DialogContent
+          sx={{
+            background:
+              'linear-gradient(135deg,rgb(112, 142, 172) 0%, #e0e7ef 100%)',
+          }}
+        >
           <DialogContentText>
             Are you sure you want to delete this user? This action cannot be
             undone.
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)} color="inherit">
+        <DialogActions
+          sx={{
+            background:
+              'linear-gradient(135deg,rgb(112, 142, 172) 0%, #e0e7ef 100%)',
+          }}
+        >
+          <Button
+            onClick={() => setOpen(false)}
+            sx={{
+              background:
+                'linear-gradient(135deg,rgb(112, 142, 172) 0%, #e0e7ef 100%)',
+            }}
+          >
             Cancel
           </Button>
-          <Button onClick={handleDelete} color="error" variant="contained">
+          <Button
+            onClick={handleDelete}
+            variant="contained"
+            sx={{
+              background:
+                'linear-gradient(135deg,rgb(112, 142, 172) 0%, #e0e7ef 100%)',
+            }}
+          >
             Delete
           </Button>
         </DialogActions>

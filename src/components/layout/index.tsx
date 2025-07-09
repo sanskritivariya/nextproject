@@ -9,39 +9,20 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-const drawerWidth = 240;
-
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const router = useRouter()
-  const pathName = usePathname()
-  const handleMenuClick = (key: string) => {
-    if (key === 'logout') {
-      localStorage.clear(); // 🔓 Clear localStorage
-      // toast.success('Logout successful'); // ✅ Toast message
-      setTimeout(() => {
-        router.push('/'); // 🔁 Redirect to login page
-      }, 1000); // Delay so user can see the toast
-    } else {
-      console.log(`Clicked: ${key}`);
-    }
-  };
+  const pathName = usePathname();
 
   return (
     <>
       <SideBar>
-         {pathName === Const?.routes?.home && (
-        <div >
-         <WelcomePage/>
-        </div>
-      )}
+        {pathName === Const?.routes?.home && (
+          <div>
+            <WelcomePage />
+          </div>
+        )}
       </SideBar>
-        {children}
-
-    
+      {children}
     </>
-    
-    
-    
   );
 };
 

@@ -63,6 +63,7 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
 
     if (key === 'logout') {
       localStorage.clear();
+      window.dispatchEvent(new Event('auth-change'));
       toast.success('Logout successful');
     }
 
@@ -88,27 +89,111 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
       <Drawer
         variant="permanent"
         sx={{
-          width: drawerWidth,
+          width: {
+            xs: 60,
+            sm: 140,
+            md: 200,
+            lg: 240,
+          },
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
-            width: drawerWidth,
+            width: {
+              xs: 60,
+              sm: 140,
+              md: 200,
+              lg: 240,
+            },
             boxSizing: 'border-box',
             backgroundColor: '#f5f5f5',
+            overflowX: 'hidden',
           },
         }}
       >
         <Toolbar />
         <List>
           {menuItems.map(({ key, label, icon, route }) => (
-            <ListItemButton key={key} onClick={() => handleMenuClick(key, route)}>
-              <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText primary={label} />
+            <ListItemButton
+              key={key}
+              onClick={() => handleMenuClick(key, route)}
+              sx={{
+                my: 1,
+                borderRadius: 2,
+                transition: 'background 0.2s',
+                '&:hover': {
+                  background:
+                    'linear-gradient(90deg,rgb(104, 84, 126) 0%,rgb(175, 194, 226) 100%)',
+                  color: '#fff',
+                  '& .MuiListItemIcon-root': {
+                    color: '#fff',
+                  },
+                },
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: {
+                    xs: 0,
+                    sm: 2,
+                  },
+                  justifyContent: 'center',
+                  color: '#6a11cb',
+                  fontSize: 28,
+                  transition: 'color 0.2s',
+                  ...(key === 'profile' && {
+                    background:
+                      'linear-gradient(135deg, #f7971e 0%, #ffd200 100%)',
+                    borderRadius: '50%',
+                    p: 1,
+                  }),
+                  ...(key === 'open' && {
+                    background:
+                      'linear-gradient(135deg, #43cea2 0%, #185a9d 100%)',
+                    borderRadius: '50%',
+                    p: 1,
+                  }),
+                  ...(key === 'Information' && {
+                    background:
+                      'linear-gradient(135deg, #ff512f 0%, #dd2476 100%)',
+                    borderRadius: '50%',
+                    p: 1,
+                  }),
+                  ...(key === 'logout' && {
+                    background:
+                      'linear-gradient(135deg, #232526 0%, #414345 100%)',
+                    borderRadius: '50%',
+                    p: 1,
+                  }),
+                }}
+              >
+                {icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={label}
+                primaryTypographyProps={{
+                  noWrap: true,
+                  sx: {
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    display: {
+                      xs: 'none',
+                      sm: 'block',
+                    },
+                    fontWeight: 600,
+                    letterSpacing: 1,
+                  },
+                }}
+              />
             </ListItemButton>
           ))}
         </List>
       </Drawer>
 
-      <Box component="main" sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+      >
         <Toolbar />
         {children}
       </Box>
