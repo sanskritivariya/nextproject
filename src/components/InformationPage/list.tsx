@@ -63,8 +63,7 @@ const List: React.FC = () => {
             variant="contained"
             sx={{
               ml: 1,
-              background:
-                'linear-gradient(135deg,rgb(136, 173, 211) 0%,rgb(152, 178, 207) 100%)',
+         background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
             }}
             // color="primary"
             onClick={() => router.push('/infoPage')}
@@ -86,8 +85,7 @@ const List: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background:
-                'linear-gradient(135deg,rgb(112, 142, 172) 0%, #e0e7ef 100%)',
+              background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
             }}
           >
             {Object.keys(users).length > 0 ? (
@@ -128,8 +126,7 @@ const List: React.FC = () => {
                           onClick={() => router.push(`/infoPage?id=${key}`)}
                           sx={{
                             ml: 1,
-                            background:
-                              'linear-gradient(135deg,rgb(164, 180, 196) 0%, #e0e7ef 100%)',
+                            background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)'
                           }}
                         >
                           Edit
@@ -143,8 +140,7 @@ const List: React.FC = () => {
                           }}
                           sx={{
                             ml: 1,
-                            background:
-                              'linear-gradient(135deg,rgb(166, 186, 206) 0%, #e0e7ef 100%)',
+                            background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
                           }}
                         >
                           Delete
@@ -198,16 +194,14 @@ const List: React.FC = () => {
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle
           sx={{
-            background:
-              'linear-gradient(135deg,rgb(112, 142, 172) 0%,rgb(116, 155, 201) 100%)',
+            background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
           }}
         >
           Delete Confirmation
         </DialogTitle>
         <DialogContent
           sx={{
-            background:
-              'linear-gradient(135deg,rgb(112, 142, 172) 0%, #e0e7ef 100%)',
+            background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
           }}
         >
           <DialogContentText>
@@ -217,15 +211,13 @@ const List: React.FC = () => {
         </DialogContent>
         <DialogActions
           sx={{
-            background:
-              'linear-gradient(135deg,rgb(112, 142, 172) 0%, #e0e7ef 100%)',
+            background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
           }}
         >
           <Button
             onClick={() => setOpen(false)}
             sx={{
-              background:
-                'linear-gradient(135deg,rgb(112, 142, 172) 0%, #e0e7ef 100%)',
+               background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
             }}
           >
             Cancel
@@ -234,8 +226,7 @@ const List: React.FC = () => {
             onClick={handleDelete}
             variant="contained"
             sx={{
-              background:
-                'linear-gradient(135deg,rgb(112, 142, 172) 0%, #e0e7ef 100%)',
+              background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
             }}
           >
             Delete

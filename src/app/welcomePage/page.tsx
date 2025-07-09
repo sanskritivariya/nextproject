@@ -24,8 +24,7 @@ const WelcomePage: React.FC = () => {
           sx={{
             p: 6,
             borderRadius: 3,
-            background:
-              'linear-gradient(135deg,rgb(166, 186, 206) 0%, #e0e7ef 100%)',
+          background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
           }}
         >
           <Box textAlign="center">

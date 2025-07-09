@@ -8,7 +8,7 @@ export default function NoPageAvailable() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 minHeight: '80vh',
-                background: 'linear-gradient(135deg,rgb(112, 142, 172) 0%, #e0e7ef 100%)',
+                background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
                 borderRadius: '16px',
                 boxShadow: '0 4px 14px rgba(0,0,0,0.08)',
                 margin: '2rem auto',

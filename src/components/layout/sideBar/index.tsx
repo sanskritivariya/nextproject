@@ -19,7 +19,6 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 
-const drawerWidth = 240;
 
 interface SideBarProps {
   setOpen?: (args: boolean) => void;
@@ -121,7 +120,7 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
                 transition: 'background 0.2s',
                 '&:hover': {
                   background:
-                    'linear-gradient(90deg,rgb(104, 84, 126) 0%,rgb(175, 194, 226) 100%)',
+                    'linear-gradient(90deg,rgb(211, 199, 224) 0%,rgb(149, 170, 206) 100%)',
                   color: '#fff',
                   '& .MuiListItemIcon-root': {
                     color: '#fff',
@@ -142,7 +141,7 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
                   transition: 'color 0.2s',
                   ...(key === 'profile' && {
                     background:
-                      'linear-gradient(135deg, #f7971e 0%, #ffd200 100%)',
+                      'linear-gradient(135deg,rgb(209, 185, 156) 0%,rgb(214, 202, 148) 100%)',
                     borderRadius: '50%',
                     p: 1,
                   }),
@@ -154,13 +153,13 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
                   }),
                   ...(key === 'Information' && {
                     background:
-                      'linear-gradient(135deg, #ff512f 0%, #dd2476 100%)',
+                      'linear-gradient(135deg,rgb(146, 74, 60) 0%, #dd2476 100%)',
                     borderRadius: '50%',
                     p: 1,
                   }),
                   ...(key === 'logout' && {
                     background:
-                      'linear-gradient(135deg, #232526 0%, #414345 100%)',
+                      'linear-gradient(135deg,rgb(87, 94, 97) 0%,rgb(102, 131, 160) 100%)',
                     borderRadius: '50%',
                     p: 1,
                   }),

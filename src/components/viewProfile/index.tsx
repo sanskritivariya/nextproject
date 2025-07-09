@@ -74,7 +74,7 @@ const ViewProfile = () => {
       {/* Grid item must be inside Grid container */}
 
       <Grid>
-        <Paper elevation={4} sx={{ p: 6, borderRadius: 3 ,   background: 'linear-gradient(135deg,rgb(112, 142, 172) 0%, #e0e7ef 100%)'}}>
+        <Paper elevation={4} sx={{ p: 6, borderRadius: 3 ,   background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)'}}>
             <Box display="flex" flexDirection="column" alignItems="center" textAlign="center" >
               <Avatar src={user.image || ''} sx={{ width: 100, height: 100, mb: 2 }} />
               <Typography variant="h5">

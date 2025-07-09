@@ -82,8 +82,8 @@ const UserForm: React.FC = () => {
 
   return (
     <div>
-      <Paper sx={{ p: 4, maxWidth: 500, mx: 'auto', mt: 6,   background: 'linear-gradient(135deg,rgb(112, 142, 172) 0%, #e0e7ef 100%)', }}>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 ,   background: 'linear-gradient(135deg,rgb(145, 159, 175) 0%,rgb(200, 214, 231) 100%)',}}>
+      <Paper sx={{ p: 4, maxWidth: 500, mx: 'auto', mt: 6,   background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)', }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 ,    background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',}}>
           <Button
             variant="outlined"
             color="primary"
