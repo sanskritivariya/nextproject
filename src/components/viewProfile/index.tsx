@@ -1,42 +1,61 @@
 'use client';
-import { Box, Typography, Paper, Divider, Stack } from '@mui/material';
+
+import { useEffect, useState } from 'react';
+import { Box, Typography, Paper, Divider, Stack, Avatar } from '@mui/material';
+import {
+  getAuth,
+  onAuthStateChanged,
+  User as FirebaseUser,
+} from 'firebase/auth';
+
+interface UserData {
+  name: string | null;
+  email: string | null;
+  image: string | null;
+  uid: string;
+}
 
 const ViewProfile = () => {
-  // Dummy user data
-  const user = {
-    name: 'Sanskriti Variya',
-    email: 'sanskritivariya25@gmail.com',
-    image:
-      'data:image/jpeg;base64,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',
-  };
+  const [user, setUser] = useState<UserData | null>(null);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (firebaseUser: FirebaseUser | null) => {
+        console.log('firebaseUser', firebaseUser);
+        if (firebaseUser) {
+          console.log('firebaseUser', firebaseUser);
+          const userData: UserData = {
+            name: firebaseUser.displayName,
+            email: firebaseUser.email,
+            image: firebaseUser.photoURL,
+            uid: firebaseUser.uid,
+          };
+          setUser(userData);
+        } else {
+          setUser(null);
+        }
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
+
+  if (!user) {
+    return <Typography variant="h6">Loading profile...</Typography>;
+  }
 
   return (
-    <Box sx={{ p: 4 }}>
-      <Paper elevation={3} sx={{ maxWidth: 500, mx: 'auto', p: 4 }}>
-        <Stack direction="column" spacing={2} alignItems="center">
-          <img
-            src={user.image}
-            alt={user.name}
-            style={{
-              width: '100px',
-              height: '100px',
-              borderRadius: '50%',
-              objectFit: 'cover',
-            }}
-          />
-          <Typography variant="h5" fontWeight="bold">
-            {user.name}
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            {user.email}
-          </Typography>
-        </Stack>
-        <Divider sx={{ my: 3 }} />
-        <Typography variant="body2" textAlign="center" color="text.secondary">
-          This is your profile information.
-        </Typography>
-      </Paper>
-    </Box>
+    <Paper elevation={3} sx={{ p: 4, maxWidth: 500, margin: 'auto', mt: 5 }}>
+      <Stack spacing={2} alignItems="center">
+        <Avatar src={user.image || ''} sx={{ width: 100, height: 100 }} />
+        <Typography variant="h5">{user.name || 'No name provided'}</Typography>
+        <Typography color="text.secondary">{user.email}</Typography>
+        <Divider sx={{ width: '100%' }} />
+        <Typography variant="caption">User ID: {user.uid}</Typography>
+      </Stack>
+    </Paper>
   );
 };
 
