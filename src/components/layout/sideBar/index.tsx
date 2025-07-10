@@ -18,6 +18,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import TrafficIcon from '@mui/icons-material/Traffic';
 
 
 interface SideBarProps {
@@ -36,9 +37,9 @@ const menuItems = [
   },
   {
     key: 'open',
-    label: 'View Details',
-    icon: <OpenInNewIcon />,
-    route: '/viewDetails',
+    label: 'Trafic Management',
+    icon: <TrafficIcon />,
+    route: '/trafficManagement',
   },
   {
     key: 'Information',
@@ -147,7 +148,7 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
                   }),
                   ...(key === 'open' && {
                     background:
-                      'linear-gradient(135deg, #43cea2 0%, #185a9d 100%)',
+                      'linear-gradient(135deg,rgb(139, 172, 161) 0%,rgb(80, 118, 156) 100%)',
                     borderRadius: '50%',
                     p: 1,
                   }),

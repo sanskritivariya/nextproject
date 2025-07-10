@@ -56,7 +56,7 @@ const List: React.FC = () => {
   };
 
   return (
-    <div style={{ marginLeft: 240, padding: '24px' }}>
+    <div style={{ marginLeft: 240,padding: '24px' }}>
       <Box sx={{ mt: 5, px: 3 }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
           <Button
