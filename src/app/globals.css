@@ -1,4 +1,4 @@
-:root {
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -16,7 +16,7 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* prevent scrollbars */
+  overflow: hidden;
 }
 
 
@@ -43,4 +43,10 @@ a {
   html {
     color-scheme: dark;
   }
+} */
+
+
+.container {
+  margin: 40px 0 84px 0; /* Top, Right, Bottom, Left */
+  padding: 0 30px;
 }

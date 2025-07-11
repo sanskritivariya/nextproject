@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { ref, push, update, get } from 'firebase/database';
 import { useRouter, useSearchParams } from 'next/navigation';
-
 import { Box, TextField, Button, Typography, Paper } from '@mui/material';
 import { database } from '../../../firebase';
 
@@ -81,9 +80,26 @@ const UserForm: React.FC = () => {
   };
 
   return (
-    <div>
-      <Paper sx={{ p: 4, maxWidth: 500, mx: 'auto', mt: 6,   background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)', }}>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 ,    background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',}}>
+    <div className="container">
+      <Paper
+        sx={{
+          p: 4,
+          maxWidth: 500,
+          mx: 'auto',
+          mt: 6,
+          background:
+            'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            mb: 2,
+            background:
+              'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
+          }}
+        >
           <Button
             variant="outlined"
             color="primary"

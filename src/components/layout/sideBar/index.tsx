@@ -19,7 +19,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import TrafficIcon from '@mui/icons-material/Traffic';
-
+import SchoolIcon from '@mui/icons-material/School';
 
 interface SideBarProps {
   setOpen?: (args: boolean) => void;
@@ -48,6 +48,12 @@ const menuItems = [
     route: '/infoPage',
   },
   {
+    key: 'learn',
+    label: 'learn',
+    icon: <SchoolIcon />,
+    route: '/learnpage',
+  },
+  {
     key: 'logout',
     label: 'Logout',
     icon: <LogoutIcon />,
@@ -55,7 +61,7 @@ const menuItems = [
   },
 ];
 
-const SideBar: React.FC<SideBarProps> = ({ children }) => {
+const SideBar: React.FC<SideBarProps> = () => {
   const router = useRouter();
 
   const handleMenuClick = (key: string, route: string) => {
@@ -86,7 +92,7 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
         </Toolbar>
       </AppBar>
 
-      <Drawer
+      {/* <Drawer
         variant="permanent"
         sx={{
           width: {
@@ -106,6 +112,18 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
             boxSizing: 'border-box',
             backgroundColor: '#f5f5f5',
             overflowX: 'hidden',
+          },
+        }}
+      > */}
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: 240,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: {
+            width: 240,
+            boxSizing: 'border-box',
+            backgroundColor: '#f5f5f5',
           },
         }}
       >
@@ -158,6 +176,12 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
                     borderRadius: '50%',
                     p: 1,
                   }),
+                  ...(key === 'learn' && {
+                    background:
+                      'linear-gradient(135deg,rgb(87, 94, 97) 0%,rgb(102, 131, 160) 100%)',
+                    borderRadius: '50%',
+                    p: 1,
+                  }),
                   ...(key === 'logout' && {
                     background:
                       'linear-gradient(135deg,rgb(87, 94, 97) 0%,rgb(102, 131, 160) 100%)',
@@ -189,14 +213,6 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
           ))}
         </List>
       </Drawer>
-
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
-      >
-        <Toolbar />
-        {children}
-      </Box>
     </Box>
   );
 };

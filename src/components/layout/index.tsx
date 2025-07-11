@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import WelcomePage from '@/app/welcomePage/page';
 import { Const } from '@/constant/const';
 import SideBar from './sideBar';
+import MainLayout from '@/common/mainLayout';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -21,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
         )}
       </SideBar>
-      {children}
+      <MainLayout>{children}</MainLayout>
     </>
   );
 };
