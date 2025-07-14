@@ -74,8 +74,8 @@ const UserForm: React.FC = () => {
 
       // Optionally redirect back to list after delay
       setTimeout(() => router.push('/infoPage/UserList'), 1000);
-    } catch (err) {
-      setError('Failed to submit. Please try again.');
+    } catch (err:any) {
+      setError(err);
     }
   };
 

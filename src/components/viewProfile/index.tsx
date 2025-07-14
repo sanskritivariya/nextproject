@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Box, Typography, Paper, Divider, Stack, Avatar } from '@mui/material';
+import { Box, Typography, Paper, Divider, Avatar } from '@mui/material';
 import {
   getAuth,
   onAuthStateChanged,

@@ -183,7 +183,7 @@ const LoginPageTest: React.FC = () => {
                   </Alert>
                 )}
                 <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-                  Don't have an account?{' '}
+                  Dont have an account?
                   <Button variant="text" onClick={() => router.push('/signupPage')}>
                     Sign up
                   </Button>

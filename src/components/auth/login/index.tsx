@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -10,13 +9,12 @@ import {
   TextField,
   Typography,
   Paper,
-  Grid,
   Alert,
   CircularProgress,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { LoginAPICALL } from '@/app/service/Login.service';
-import { useRouter } from 'next/navigation';
+
 
 // Validation Schema
 const LoginSchema = Yup.object().shape({
@@ -43,7 +41,6 @@ const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const router=useRouter()
 
   return (
     <Box
@@ -114,8 +111,8 @@ const LoginPage: React.FC = () => {
                 } else {
                   setError('Invalid credentials.');
                 }
-              } catch (err) {
-                setError('Login failed. Please try again.');
+              } catch (err:any) {
+                setError(err);
               } finally {
                 setLoading(false);
                 setSubmitting(false);

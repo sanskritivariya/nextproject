@@ -166,7 +166,7 @@ const List: React.FC = () => {
                   src="/no-data.svg"
                   alt="No data"
                   style={{ width: 120, marginBottom: 16, opacity: 0.7 }}
-                  onError={(e) => {
+                  onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                     (e.target as HTMLImageElement).style.display = 'none';
                   }}
                 />

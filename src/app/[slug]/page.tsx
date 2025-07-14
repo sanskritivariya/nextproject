@@ -1,3 +1,4 @@
+import Link from "next/link";
 
 export default function NoPageAvailable() {
     return (
@@ -31,7 +32,7 @@ export default function NoPageAvailable() {
             }}>
                 No page available for this route.
             </p>
-            <a
+            <Link
                 href="/"
                 style={{
                     marginTop: '2rem',
@@ -46,7 +47,7 @@ export default function NoPageAvailable() {
                 }}
             >
                 Go Home
-            </a>
+            </Link>
         </div>
     );
 }

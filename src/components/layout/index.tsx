@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import WelcomePage from '@/app/welcomePage/page';
 import { Const } from '@/constant/const';
 import SideBar from './sideBar';
