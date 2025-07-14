@@ -26,7 +26,7 @@ const LearnMainPage = () => {
           <ul>
             <li>Introduction</li>
             <li>Getting Started</li>
-            <li>Advanced Topics</li>
+            <li>Advanced Topics changes</li>
           </ul>
         </div>
 
