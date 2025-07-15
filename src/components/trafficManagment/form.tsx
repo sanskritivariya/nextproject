@@ -2,9 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
-import { app } from '../../../lib/firebase';
-
 import {
   Box,
   Paper,
@@ -13,11 +10,23 @@ import {
   Button,
   Typography,
   Stack,
+  Divider,
 } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { app } from '../../../lib/firebase';
+interface FormErrors {
+  name?: string;
+  city?: string;
+  state?: string;
+  green?: string;
+  yellow?: string;
+}
 
 const CreateSignalPage = () => {
   const router = useRouter();
   const db = getFirestore(app);
+
 
   const [form, setForm] = useState({
     name: '',
@@ -30,32 +39,40 @@ const CreateSignalPage = () => {
     },
   });
 
+const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e:any) => {
     const { name, value } = e.target;
 
     if (name === 'green' || name === 'yellow') {
       setForm((prev) => ({
         ...prev,
-        timings: {
-          ...prev.timings,
-          [name]: Number(value),
-        },
+        timings: { ...prev.timings, [name]: Number(value) },
       }));
     } else if (name === 'roads') {
-      setForm((prev) => ({ ...prev, [name]: Number(value) }));
+      setForm((prev) => ({ ...prev, roads: Number(value) }));
     } else {
       setForm((prev) => ({ ...prev, [name]: value }));
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const validate = () => {
+    const newErrors: any = {};
+    if (!form.name.trim()) newErrors.name = 'Signal name is required';
+    if (!form.city.trim()) newErrors.city = 'City is required';
+    if (!form.state.trim()) newErrors.state = 'State is required';
+    if (!form.timings.green) newErrors.green = 'Green duration required';
+    if (!form.timings.yellow) newErrors.yellow = 'Yellow duration required';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
+  const handleSubmit = async (e:any) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    setLoading(true);
     try {
       await addDoc(collection(db, 'signals'), {
         ...form,
@@ -73,11 +90,30 @@ const CreateSignalPage = () => {
   };
 
   return (
-    <Box>
-      <Paper sx={{ p: 4, width: '100%', maxWidth: 600 }} elevation={3}>
-        <Typography variant="h5" gutterBottom>
+    <Box sx={{ px: { xs: 2, sm: 4 }, py: 3 }}>
+      <Button
+        variant="outlined"
+        startIcon={<ArrowBackIcon />}
+        sx={{ mb: 2 }}
+        onClick={() => router.back()}
+      >
+        Back
+      </Button>
+
+      <Paper
+        elevation={4}
+        sx={{
+          p: { xs: 3, sm: 4 },
+          maxWidth: 600,
+          mx: 'auto',
+          borderRadius: 3,
+          backgroundColor: '#fdfdfd',
+        }}
+      >
+        <Typography variant="h5" fontWeight={600} gutterBottom>
           Create New Traffic Signal
         </Typography>
+        <Divider sx={{ mb: 3 }} />
 
         <form onSubmit={handleSubmit}>
           <Stack spacing={2}>
@@ -88,8 +124,11 @@ const CreateSignalPage = () => {
               required
               value={form.name}
               onChange={handleChange}
+              error={!!errors.name}
+              helperText={errors.name}
             />
-            <Stack direction="row" spacing={2}>
+
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
               <TextField
                 label="City"
                 name="city"
@@ -97,6 +136,8 @@ const CreateSignalPage = () => {
                 required
                 value={form.city}
                 onChange={handleChange}
+                error={!!errors.city}
+                helperText={errors.city}
               />
               <TextField
                 label="State"
@@ -105,6 +146,8 @@ const CreateSignalPage = () => {
                 required
                 value={form.state}
                 onChange={handleChange}
+                error={!!errors?.state}
+                helperText={errors.state}
               />
             </Stack>
 
@@ -123,7 +166,7 @@ const CreateSignalPage = () => {
               ))}
             </TextField>
 
-            <Stack direction="row" spacing={2}>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
               <TextField
                 label="Green Duration (sec)"
                 name="green"
@@ -131,6 +174,8 @@ const CreateSignalPage = () => {
                 fullWidth
                 value={form.timings.green}
                 onChange={handleChange}
+                error={!!errors.green}
+                helperText={errors.green}
               />
               <TextField
                 label="Yellow Duration (sec)"
@@ -139,15 +184,17 @@ const CreateSignalPage = () => {
                 fullWidth
                 value={form.timings.yellow}
                 onChange={handleChange}
+                error={!!errors.yellow}
+                helperText={errors.yellow}
               />
             </Stack>
 
             <Button
               type="submit"
               variant="contained"
-              color="primary"
               fullWidth
               disabled={loading}
+              sx={{ mt: 1 }}
             >
               {loading ? 'Creating...' : 'Create Signal'}
             </Button>

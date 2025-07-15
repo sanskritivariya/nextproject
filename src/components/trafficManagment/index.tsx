@@ -116,33 +116,43 @@ export default function DashboardPage() {
               </Table>
             </Paper>
           ) : (
-            // 📱 Mobile: Card layout (no scroll)
-            <Stack spacing={2}>
-              {signals.map((signal) => (
-                <Card key={signal.id} variant="outlined">
-                  <CardContent>
-                    <Typography variant="h6">{signal.name}</Typography>
-                    <Divider sx={{ my: 1 }} />
-                    <Typography variant="body2" color="text.secondary">
-                      City: <strong>{signal.city}</strong>
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      State: <strong>{signal.state}</strong>
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Roads: <strong>{signal.roads}-way</strong>
-                    </Typography>
-                    <Box mt={2}>
-                      <Link href={`/signal/${signal.id}`} passHref>
-                        <Button variant="contained" size="small" fullWidth>
-                          View
-                        </Button>
-                      </Link>
-                    </Box>
-                  </CardContent>
-                </Card>
-              ))}
-            </Stack>
+                  // 📱 Mobile: Card layout (no scroll)
+                  
+           <Box
+  sx={{
+    maxHeight: 'calc(100vh - 200px)', // adjust as needed based on header height
+    overflowY: 'auto',
+    pr: 1, // optional padding for scrollbar spacing
+  }}
+>
+  <Stack spacing={2}>
+    {signals.map((signal) => (
+      <Card key={signal.id} variant="outlined">
+        <CardContent>
+          <Typography variant="h6">{signal.name}</Typography>
+          <Divider sx={{ my: 1 }} />
+          <Typography variant="body2" color="text.secondary">
+            City: <strong>{signal.city}</strong>
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            State: <strong>{signal.state}</strong>
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Roads: <strong>{signal.roads}-way</strong>
+          </Typography>
+          <Box mt={2}>
+            <Link href={`/signal/${signal.id}`} passHref>
+              <Button variant="contained" size="small" fullWidth>
+                View
+              </Button>
+            </Link>
+          </Box>
+        </CardContent>
+      </Card>
+    ))}
+  </Stack>
+</Box>
+
           )}
         </>
       )}

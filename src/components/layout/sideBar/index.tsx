@@ -228,16 +228,19 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
       </Box>
 
       {/* Main content */}
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          mt: 8, // Push content below AppBar
-        }}
-      >
-        {children}
-      </Box>
+{children && (
+  <Box
+    component="main"
+    sx={{
+      flexGrow: 1,
+      p: 3,
+      mt: 8, // Push content below AppBar
+    }}
+  >
+    {children}
+  </Box>
+)}
+
     </Box>
   );
 };
