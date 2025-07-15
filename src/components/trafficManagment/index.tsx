@@ -117,51 +117,82 @@ export default function DashboardPage() {
             </Paper>
           ) : (
             // 📱 Mobile: Card layout (no scroll)
-
             <Box
               sx={{
-                height: '100dvh', // dynamic viewport height (safe on mobile)
-                display: 'flex',
-                flexDirection: 'column',
-                px: 2,
-                pt: 2,
-                pb: 4,
+                height: 'calc(100vh - 100px)', // subtract header/buttons height roughly
+                overflowY: 'auto',
+                px: 1,
+                py: 2,
               }}
             >
-              <Box
-                sx={{
-                  flexGrow: 1,
-                  overflowY: 'auto',
-                  paddingBottom: 3,
-                }}
-              >
-                <Stack spacing={2}>
-                  {signals.map((signal) => (
-                    <Card key={signal.id} variant="outlined">
-                      <CardContent>
-                        <Typography variant="h6">{signal.name}</Typography>
-                        <Divider sx={{ my: 1 }} />
+              <Stack spacing={2} pb={4}>
+                {signals.length === 0 ? (
+                  <Typography
+                    variant="body1"
+                    textAlign="center"
+                    color="text.secondary"
+                    mt={4}
+                  >
+                    No signals found.
+                  </Typography>
+                ) : (
+                  signals.map((signal) => (
+                    <Card
+                      key={signal.id}
+                      sx={{
+                        borderRadius: 2,
+                        boxShadow: 2,
+                        background: 'white',
+                        px: 2,
+                        py: 1,
+                      }}
+                    >
+                      <CardContent sx={{ p: 0 }}>
+                        <Typography
+                          variant="subtitle1"
+                          fontWeight={600}
+                          gutterBottom
+                        >
+                          {signal.name}
+                        </Typography>
+
                         <Typography variant="body2" color="text.secondary">
-                          City: <strong>{signal.city}</strong>
+                          <b>City:</b> {signal.city}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          State: <strong>{signal.state}</strong>
+                          <b>State:</b> {signal.state}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          Roads: <strong>{signal.roads}-way</strong>
+                          <b>Roads:</b> {signal.roads}-way
                         </Typography>
+
                         <Box mt={2}>
                           <Link href={`/signal/${signal.id}`} passHref>
-                            <Button variant="contained" size="small" fullWidth>
+                            <Button
+                              variant="contained"
+                              fullWidth
+                              size="small"
+                              sx={{
+                                borderRadius: 1,
+                                textTransform: 'none',
+                                fontWeight: 500,
+                                background:
+                                  'linear-gradient(135deg, #90caf9 0%, #42a5f5 100%)',
+                                '&:hover': {
+                                  background:
+                                    'linear-gradient(135deg, #64b5f6 0%, #2196f3 100%)',
+                                },
+                              }}
+                            >
                               View
                             </Button>
                           </Link>
                         </Box>
                       </CardContent>
                     </Card>
-                  ))}
-                </Stack>
-              </Box>
+                  ))
+                )}
+              </Stack>
             </Box>
           )}
         </>

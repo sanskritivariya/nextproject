@@ -74,7 +74,7 @@ const UserForm: React.FC = () => {
 
       // Optionally redirect back to list after delay
       setTimeout(() => router.push('/infoPage/UserList'), 1000);
-    } catch (err:any) {
+    } catch (err: any) {
       setError(err);
     }
   };
@@ -157,6 +157,11 @@ const UserForm: React.FC = () => {
           <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
             {userId ? 'Update' : 'Submit'}
           </Button>
+          {userId && (
+            <Button  variant="contained" fullWidth sx={{ mt: 2 }} onClick={() => router.push('/infoPage')}>
+              Cancel
+            </Button>
+          )}
 
           {success && (
             <Typography color="green" mt={2}>

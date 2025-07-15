@@ -18,6 +18,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  useMediaQuery,
+  useTheme,
+  Grid,
+  Card,
+  CardContent,
+  CardActions,
 } from '@mui/material';
 import { database } from '../../../firebase';
 
@@ -34,6 +40,9 @@ const List: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const router = useRouter();
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     const usersRef = ref(database, 'users');
@@ -56,21 +65,22 @@ const List: React.FC = () => {
   };
 
   return (
-    <div style={{ marginLeft: 240,padding: '24px' }}>
+    <div>
       <Box sx={{ mt: 5, px: 3 }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
           <Button
             variant="contained"
             sx={{
               ml: 1,
-         background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
+              background:
+                'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
             }}
-            // color="primary"
             onClick={() => router.push('/infoPage')}
           >
             Back
           </Button>
         </Box>
+
         <Typography variant="h4" gutterBottom>
           User List
         </Typography>
@@ -82,74 +92,117 @@ const List: React.FC = () => {
             sx={{
               overflowX: 'auto',
               minHeight: 300,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
+              p: 2,
+              background:
+                'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
             }}
           >
             {Object.keys(users).length > 0 ? (
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <b>Username</b>
-                    </TableCell>
-                    <TableCell>
-                      <b>User Place</b>
-                    </TableCell>
-                    <TableCell>
-                      <b>Amount Paid</b>
-                    </TableCell>
-                    <TableCell>
-                      <b>Created At</b>
-                    </TableCell>
-                    <TableCell>
-                      <b>Action</b>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
+              isMobile ? (
+                <Box
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr',
+                    gap: 2,
+                  }}
+                >
                   {Object.entries(users).map(([key, user]) => (
-                    <TableRow key={key}>
-                      <TableCell>{user.username}</TableCell>
-                      <TableCell>{user.userplace}</TableCell>
-                      <TableCell>{user.amountPaid}</TableCell>
+                    <Box key={key}>
+                      <Card>
+                        <CardContent>
+                          <Typography variant="h6">{user.username}</Typography>
+                          <Typography variant="body2">
+                            <strong>Place:</strong> {user.userplace}
+                          </Typography>
+                          <Typography variant="body2">
+                            <strong>Amount:</strong> ₹{user.amountPaid}
+                          </Typography>
+                          <Typography variant="body2">
+                            <strong>Date:</strong>{' '}
+                            {user.createdAt
+                              ? new Date(user.createdAt).toLocaleString()
+                              : '-'}
+                          </Typography>
+                        </CardContent>
+                        <CardActions>
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            onClick={() => router.push(`/infoPage?id=${key}`)}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            onClick={() => {
+                              setDeleteId(key);
+                              setOpen(true);
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        </CardActions>
+                      </Card>
+                    </Box>
+                  ))}
+                </Box>
+              ) : (
+                <Table>
+                  <TableHead>
+                    <TableRow>
                       <TableCell>
-                        {user.createdAt
-                          ? new Date(user.createdAt).toLocaleString()
-                          : '-'}
+                        <b>Username</b>
                       </TableCell>
                       <TableCell>
-                        <Button
-                          variant="outlined"
-                          onClick={() => router.push(`/infoPage?id=${key}`)}
-                          sx={{
-                            ml: 1,
-                            background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)'
-                          }}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          variant="outlined"
-                          // color="secondary"
-                          onClick={() => {
-                            setDeleteId(key);
-                            setOpen(true);
-                          }}
-                          sx={{
-                            ml: 1,
-                            background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
-                          }}
-                        >
-                          Delete
-                        </Button>
+                        <b>User Place</b>
+                      </TableCell>
+                      <TableCell>
+                        <b>Amount Paid</b>
+                      </TableCell>
+                      <TableCell>
+                        <b>Created At</b>
+                      </TableCell>
+                      <TableCell>
+                        <b>Action</b>
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHead>
+                  <TableBody>
+                    {Object.entries(users).map(([key, user]) => (
+                      <TableRow key={key}>
+                        <TableCell>{user.username}</TableCell>
+                        <TableCell>{user.userplace}</TableCell>
+                        <TableCell>{user.amountPaid}</TableCell>
+                        <TableCell>
+                          {user.createdAt
+                            ? new Date(user.createdAt).toLocaleString()
+                            : '-'}
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="outlined"
+                            onClick={() => router.push(`/infoPage?id=${key}`)}
+                            sx={{ ml: 1 }}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            onClick={() => {
+                              setDeleteId(key);
+                              setOpen(true);
+                            }}
+                            sx={{ ml: 1 }}
+                          >
+                            Delete
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )
             ) : (
               <Box
                 sx={{
@@ -166,7 +219,9 @@ const List: React.FC = () => {
                   src="/no-data.svg"
                   alt="No data"
                   style={{ width: 120, marginBottom: 16, opacity: 0.7 }}
-                  onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                  onError={(
+                    e: React.SyntheticEvent<HTMLImageElement, Event>
+                  ) => {
                     (e.target as HTMLImageElement).style.display = 'none';
                   }}
                 />
@@ -178,7 +233,6 @@ const List: React.FC = () => {
                 </Typography>
                 <Button
                   variant="contained"
-                  color="primary"
                   sx={{ mt: 2 }}
                   onClick={() => router.push('/infoPage')}
                 >
@@ -190,18 +244,20 @@ const List: React.FC = () => {
         )}
       </Box>
 
-      {/* Confirmation Dialog */}
+      {/* Delete Confirmation Dialog */}
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle
           sx={{
-            background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
+            background:
+              'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
           }}
         >
           Delete Confirmation
         </DialogTitle>
         <DialogContent
           sx={{
-            background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
+            background:
+              'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
           }}
         >
           <DialogContentText>
@@ -211,24 +267,12 @@ const List: React.FC = () => {
         </DialogContent>
         <DialogActions
           sx={{
-            background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
+            background:
+              'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
           }}
         >
-          <Button
-            onClick={() => setOpen(false)}
-            sx={{
-               background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleDelete}
-            variant="contained"
-            sx={{
-              background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
-            }}
-          >
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button onClick={handleDelete} variant="contained">
             Delete
           </Button>
         </DialogActions>
