@@ -81,7 +81,7 @@ const [errors, setErrors] = useState<FormErrors>({});
         remainingTime: form.timings.green,
         lastUpdated: new Date(),
       });
-      router.push('/');
+      router.push('/trafficManagemen');
     } catch (err) {
       console.error('Error creating signal:', err);
     } finally {
@@ -90,7 +90,9 @@ const [errors, setErrors] = useState<FormErrors>({});
   };
 
   return (
-    <Box sx={{ px: { xs: 2, sm: 4 }, py: 3 }}>
+    
+    <Box sx={{ px: { xs: 2, sm: 4 }, py: 3, maxHeight: 'calc(100vh - 200px)', // adjust as needed based on header height
+    overflowY: 'auto', }}>
       <Button
         variant="outlined"
         startIcon={<ArrowBackIcon />}
