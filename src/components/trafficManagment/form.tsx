@@ -73,16 +73,7 @@ const CreateSignalPage = () => {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        pl: '240px', // adjust for sidebar
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        p: 2,
-      }}
-    >
+    <Box>
       <Paper sx={{ p: 4, width: '100%', maxWidth: 600 }} elevation={3}>
         <Typography variant="h5" gutterBottom>
           Create New Traffic Signal

@@ -17,11 +17,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <>
       <SideBar>
         {pathName === Const?.routes?.home && (
-          <div>
-            <MainLayout>
-              <WelcomePage />
-            </MainLayout>
-          </div>
+          <>
+            <WelcomePage />
+          </>
         )}
       </SideBar>
       <MainLayout>{children}</MainLayout>

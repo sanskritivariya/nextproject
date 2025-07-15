@@ -1,9 +1,26 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-
-import { collection, onSnapshot, getFirestore } from 'firebase/firestore';
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
+  Button,
+  useMediaQuery,
+  useTheme,
+  Card,
+  CardContent,
+  Divider,
+  Stack,
+} from '@mui/material';
 import Link from 'next/link';
+import { collection, onSnapshot, getFirestore } from 'firebase/firestore';
 import { app } from '../../../firebase';
 
 interface Signal {
@@ -15,7 +32,9 @@ interface Signal {
 }
 
 export default function DashboardPage() {
-  const [signals, setSignals] = useState<Signal[]>([]);
+  const [signals, setSignals] = useState<Signal[] | null>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     const firestore = getFirestore(app);
@@ -34,36 +53,99 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div style={{ marginLeft: 240, padding: '24px' }}>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Traffic Signals</h1>
-        <Link
-          href="/trafficManagement/signal"
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          + Create Signal
-        </Link>
-      </div>
+    <Box sx={{ p: { xs: 2, md: 4 } }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
+          justifyContent: 'space-between',
+          alignItems: isMobile ? 'flex-start' : 'center',
+          mb: 3,
+          gap: 2,
+        }}
+      >
+        <Typography variant="h5" fontWeight={700}>
+          Traffic Signals
+        </Typography>
 
-      {signals.length === 0 ? (
-        <p>No signals found.</p>
+        <Link href="/trafficManagement/signal" passHref>
+          <Button variant="contained" color="primary">
+            + Create Signal
+          </Button>
+        </Link>
+      </Box>
+
+      {signals === null ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+          <CircularProgress />
+        </Box>
+      ) : signals.length === 0 ? (
+        <Typography>No signals found.</Typography>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {signals.map((signal) => (
-            <Link
-              key={signal.id}
-              href={`/signal/${signal.id}`}
-              className="block p-4 border rounded shadow hover:shadow-lg transition"
-            >
-              <h2 className="text-xl font-semibold">{signal.name}</h2>
-              <p className="text-sm text-gray-600">
-                {signal.city}, {signal.state}
-              </p>
-              <p className="text-sm mt-1">🚦 {signal.roads}-way</p>
-            </Link>
-          ))}
-        </div>
+        <>
+          {!isMobile ? (
+            // 🖥 Desktop/tablet: MUI Table
+            <Paper elevation={3}>
+              <Table>
+                <TableHead>
+                  <TableRow sx={{ backgroundColor: '#f0f0f0' }}>
+                    <TableCell sx={{ fontWeight: 600 }}>Name</TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>City</TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>State</TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>Roads</TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>View</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {signals.map((signal) => (
+                    <TableRow key={signal.id} hover>
+                      <TableCell>{signal.name}</TableCell>
+                      <TableCell>{signal.city}</TableCell>
+                      <TableCell>{signal.state}</TableCell>
+                      <TableCell>{signal.roads}-way</TableCell>
+                      <TableCell>
+                        <Link href={`/signal/${signal.id}`} passHref>
+                          <Button size="small" variant="outlined">
+                            View
+                          </Button>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Paper>
+          ) : (
+            // 📱 Mobile: Card layout (no scroll)
+            <Stack spacing={2}>
+              {signals.map((signal) => (
+                <Card key={signal.id} variant="outlined">
+                  <CardContent>
+                    <Typography variant="h6">{signal.name}</Typography>
+                    <Divider sx={{ my: 1 }} />
+                    <Typography variant="body2" color="text.secondary">
+                      City: <strong>{signal.city}</strong>
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      State: <strong>{signal.state}</strong>
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Roads: <strong>{signal.roads}-way</strong>
+                    </Typography>
+                    <Box mt={2}>
+                      <Link href={`/signal/${signal.id}`} passHref>
+                        <Button variant="contained" size="small" fullWidth>
+                          View
+                        </Button>
+                      </Link>
+                    </Box>
+                  </CardContent>
+                </Card>
+              ))}
+            </Stack>
+          )}
+        </>
       )}
-    </div>
+    </Box>
   );
 }

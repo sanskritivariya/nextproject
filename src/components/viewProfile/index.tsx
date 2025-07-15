@@ -48,44 +48,36 @@ const ViewProfile = () => {
   }
 
   return (
-    // <Paper elevation={3} sx={{ p: 4, maxWidth: 500, margin: 'auto', mt: 5 }}>
-    //   <Stack spacing={2} alignItems="center">
-    //     <Avatar src={user.image || ''} sx={{ width: 100, height: 100 }} />
-    //     <Typography variant="h5">{user.name || 'No name provided'}</Typography>
-    //     <Typography color="text.secondary">{user.email}</Typography>
-    //     <Divider sx={{ width: '100%' }} />
-    //     <Typography variant="caption">User ID: {user.uid}</Typography>
-    //   </Stack>
-    // </Paper>
-
-    <Grid
-      container
-      justifyContent="center"
-      alignItems="center"
-      sx={{
-        height: '100vh',
-        overflow: 'hidden',
-        margin: 0,
-        padding: 0,
-        bgcolor: '#f0f2f5',
-        
-      }}
-    >
-      {/* Grid item must be inside Grid container */}
-
+    <Grid container justifyContent="center" alignItems="center">
       <Grid>
-        <Paper elevation={4} sx={{ p: 6, borderRadius: 3 ,   background: 'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)'}}>
-            <Box display="flex" flexDirection="column" alignItems="center" textAlign="center" >
-              <Avatar src={user.image || ''} sx={{ width: 100, height: 100, mb: 2 }} />
-              <Typography variant="h5">
-                {user.name || 'No name provided'}
-              </Typography>
-              <Typography color="text.secondary" sx={{ mb: 2 }}>
-                {user.email}
-              </Typography>
-              <Divider sx={{ my: 2, borderColor: 'divider', width: '100%' }} />
-              <Typography variant="caption">User ID: {user.uid}</Typography>
-            </Box>
+        <Paper
+          elevation={4}
+          sx={{
+            p: 6,
+            borderRadius: 3,
+            background:
+              'linear-gradient(135deg,rgb(216, 225, 235) 0%, #e0e7ef 100%)',
+          }}
+        >
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            textAlign="center"
+          >
+            <Avatar
+              src={user.image || ''}
+              sx={{ width: 100, height: 100, mb: 2 }}
+            />
+            <Typography variant="h5">
+              {user.name || 'Name Unavailable'}
+            </Typography>
+            <Typography color="text.secondary" sx={{ mb: 2 }}>
+              {user.email}
+            </Typography>
+            <Divider sx={{ my: 2, borderColor: 'divider', width: '100%' }} />
+            <Typography variant="caption">User ID: {user.uid}</Typography>
+          </Box>
         </Paper>
       </Grid>
     </Grid>
