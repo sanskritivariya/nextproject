@@ -81,7 +81,7 @@ const [errors, setErrors] = useState<FormErrors>({});
         remainingTime: form.timings.green,
         lastUpdated: new Date(),
       });
-      router.push('/trafficManagemen');
+      router.push('/trafficManagement');
     } catch (err) {
       console.error('Error creating signal:', err);
     } finally {
