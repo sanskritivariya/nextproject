@@ -12,20 +12,26 @@ const MainContent = ({ children }) => {
     <Box
       component="main"
       sx={{
-        marginLeft: isMobile ? 0 : isTablet ? '200px' : '240px', // dynamic sidebar width
+        marginLeft: isMobile ? 0 : isTablet ? '200px' : '240px',
         p: {
-          xs: 2, // smaller padding for mobile
+          xs: 2,
           sm: 3,
           md: 4,
         },
-        minHeight: '100vh',
-        overflow: 'hidden',
+        height: '100vh', // ✅ Important for consistent scroll container
+        overflowY: 'auto', // ✅ Enables vertical scrolling
+        overflowX: 'hidden',
         backgroundColor: '#fff',
         transition: 'margin 0.3s ease, padding 0.3s ease',
+        display: 'flex',
+        flexDirection: 'column', // ✅ Helps children flow top to bottom
       }}
     >
-      <Toolbar /> {/* ensures spacing below AppBar */}
-      {children}
+      <Toolbar />
+      <Box sx={{ flexGrow: 1, overflowY: 'auto', px: 1, py: 2 }}>
+        {children}
+      </Box>{' '}
+      {/* <- This is important */}
     </Box>
   );
 };

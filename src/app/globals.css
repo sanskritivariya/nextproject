@@ -92,11 +92,11 @@ a {
   overflow-y: auto;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow-x: hidden; /* horizontal scroll removed */
-  overflow-y: auto;   /* vertical scroll allowed if needed */
+  overflow-x: hidden;
+  overflow-y: auto; /* vertical scroll allowed if needed */
 }
-

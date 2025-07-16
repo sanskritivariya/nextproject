@@ -11,40 +11,32 @@ import {
   Paper,
   Alert,
   CircularProgress,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { ref, set } from 'firebase/database';
 import { auth, database } from '../../../../firebase';
 
-// Validation Schema
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
-  password: Yup.string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
+  password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
   name: Yup.string().required('Name is required'),
 });
 
-// Styled Background Image Box
-const ImageBox = styled(Box)(({ theme }) => ({
-  width: '100%',
-  height: '100%',
-  backgroundImage:
-    'url(https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80)',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  [theme.breakpoints.down('md')]: {
-    display: 'none',
-  },
-}));
+const MotionBox = motion(Box);
 
 const Signup: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   return (
@@ -70,11 +62,51 @@ const Signup: React.FC = () => {
           overflow: 'hidden',
         }}
       >
-        <Box sx={{ flex: 1 }}>
-          <ImageBox />
-        </Box>
+        <MotionBox
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          sx={{
+            flex: { xs: 'none', md: 1 },
+            height: { xs: 200, md: '100%' },
+            position: 'relative',
+          }}
+        >
+          <Box
+            component="img"
+            src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=50"
+            alt="Sign up background"
+            loading="lazy"
+            onLoad={() => setImageLoaded(true)}
+            sx={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              opacity: imageLoaded ? 1 : 0,
+              transition: 'opacity 0.5s ease-in-out',
+              display: 'block',
+            }}
+          />
+          {!imageLoaded && (
+            <Box
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                backgroundSize: '200% 100%',
+                animation: 'loadingShimmer 1.2s infinite',
+              }}
+            />
+          )}
+        </MotionBox>
 
-        <Box
+        <MotionBox
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
           sx={{
             flex: 1,
             p: { xs: 4, md: 6 },
@@ -83,11 +115,7 @@ const Signup: React.FC = () => {
             justifyContent: 'center',
           }}
         >
-          <Typography
-            component="h1"
-            variant="h4"
-            sx={{ fontWeight: 700, mb: 3, textAlign: 'center' }}
-          >
+          <Typography component="h1" variant="h4" sx={{ fontWeight: 700, mb: 3, textAlign: 'center' }}>
             Sign Up
           </Typography>
 
@@ -100,22 +128,14 @@ const Signup: React.FC = () => {
               setSuccess(false);
 
               try {
-                const userCred = await createUserWithEmailAndPassword(
-                  auth,
-                  values.email,
-                  values.password
-                );
-
+                const userCred = await createUserWithEmailAndPassword(auth, values.email, values.password);
                 const user = userCred.user;
-
-                // Write to Realtime Database
                 await set(ref(database, `users/${user.uid}`), {
                   uid: user.uid,
                   email: user.email,
                   name: values.name,
                   createdAt: new Date().toISOString(),
                 });
-
                 setSuccess(true);
                 router.push('/');
               } catch (err: any) {
@@ -126,14 +146,7 @@ const Signup: React.FC = () => {
               }
             }}
           >
-            {({
-              isSubmitting,
-              handleChange,
-              handleBlur,
-              values,
-              touched,
-              errors,
-            }) => (
+            {({ isSubmitting, handleChange, handleBlur, values, touched, errors }) => (
               <Form>
                 <TextField
                   fullWidth
@@ -167,12 +180,21 @@ const Signup: React.FC = () => {
                   id="password"
                   name="password"
                   label="Password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={values.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={touched.password && Boolean(errors.password)}
                   helperText={touched.password && errors.password}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={() => setShowPassword((prev) => !prev)} edge="end">
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
 
                 <Button
@@ -187,28 +209,17 @@ const Signup: React.FC = () => {
                   {loading ? 'Signing up...' : 'Sign Up'}
                 </Button>
 
-                {error && (
-                  <Alert severity="error" sx={{ mt: 2 }}>
-                    {error}
-                  </Alert>
-                )}
-
-                {success && (
-                  <Alert severity="success" sx={{ mt: 2 }}>
-                    Signup successful! Redirecting...
-                  </Alert>
-                )}
+                {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+                {success && <Alert severity="success" sx={{ mt: 2 }}>Signup successful! Redirecting...</Alert>}
 
                 <Typography variant="body2" align="center" sx={{ mt: 2 }}>
                   Already have an account?{' '}
-                  <Button variant="text" onClick={() => router.push('/')}>
-                    Login Page
-                  </Button>
+                  <Button variant="text" onClick={() => router.push('/')}>Login Page</Button>
                 </Typography>
               </Form>
             )}
           </Formik>
-        </Box>
+        </MotionBox>
       </Paper>
     </Box>
   );

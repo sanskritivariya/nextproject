@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../../firebase';
@@ -26,18 +27,18 @@ const LoginSchema = Yup.object().shape({
     .required('Password is required'),
 });
 
-// Styled Background Image Box
+// Styled Background Image Box (now always visible)
 const ImageBox = styled(Box)(({ theme }) => ({
   width: '100%',
   height: '100%',
-  backgroundImage:
-    'url(https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80)',
+ backgroundImage: 'url(https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=50)',
+
   backgroundSize: 'cover',
   backgroundPosition: 'center',
-  [theme.breakpoints.down('md')]: {
-    display: 'none', // Hide on small screens
-  },
 }));
+
+const MotionImageBox = motion(ImageBox);
+const MotionBox = motion(Box);
 
 const LoginPageTest: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -68,13 +69,20 @@ const LoginPageTest: React.FC = () => {
           overflow: 'hidden',
         }}
       >
-        {/* Left side image */}
-        <Box sx={{ flex: 1 }}>
-          <ImageBox />
-        </Box>
+        {/* Image Section - visible on all screen sizes now */}
+        <MotionImageBox
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          sx={{
+            flex: { xs: 'none', md: 1 },
+            height: { xs: 200, md: '100%' },
+            width: '100%',
+          }}
+        />
 
-        {/* Right side form */}
-        <Box
+        {/* Form Section */}
+        <MotionBox
           sx={{
             flex: 1,
             p: { xs: 4, md: 6 },
@@ -82,6 +90,9 @@ const LoginPageTest: React.FC = () => {
             flexDirection: 'column',
             justifyContent: 'center',
           }}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           <Typography
             component="h1"
@@ -106,7 +117,6 @@ const LoginPageTest: React.FC = () => {
                   values.password
                 );
 
-                // Success
                 const user = userCredential.user;
                 setSuccess(true);
                 localStorage.setItem('uid', user.uid);
@@ -164,7 +174,16 @@ const LoginPageTest: React.FC = () => {
                   fullWidth
                   variant="contained"
                   color="primary"
-                  sx={{ mt: 3, mb: 2, py: 1.5, fontWeight: 600 }}
+                  sx={{
+                    mt: 3,
+                    mb: 2,
+                    py: 1.5,
+                    fontWeight: 600,
+                    transition: 'transform 0.2s ease',
+                    '&:hover': {
+                      transform: 'scale(1.02)',
+                    },
+                  }}
                   disabled={loading || isSubmitting}
                   startIcon={loading ? <CircularProgress size={20} /> : null}
                 >
@@ -182,8 +201,9 @@ const LoginPageTest: React.FC = () => {
                     Login successful!
                   </Alert>
                 )}
+
                 <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-                  Dont have an account?
+                  Don&apos;t have an account?
                   <Button variant="text" onClick={() => router.push('/signupPage')}>
                     Sign up
                   </Button>
@@ -191,7 +211,7 @@ const LoginPageTest: React.FC = () => {
               </Form>
             )}
           </Formik>
-        </Box>
+        </MotionBox>
       </Paper>
     </Box>
   );
